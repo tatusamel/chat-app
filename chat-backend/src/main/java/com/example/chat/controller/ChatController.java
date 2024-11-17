@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class ChatController {
@@ -35,5 +36,10 @@ public class ChatController {
         return chatMessage;
     }
 
+    @MessageMapping("/chat.getHistory")
+    @SendTo("/topic/history")
+    public List<ChatMessage> getChatHistory() {
+        return chatService.getChatHistory();
+    }
 
 }

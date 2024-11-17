@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@stomp/stompjs": "^7.0.0",
+    "lucide-svelte": "^0.460.1",
     "sockjs-client": "^1.6.1"
   }
 }

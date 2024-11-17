@@ -31,12 +31,25 @@ export class ChatWebSocket {
 
     this.stompClient.onConnect = () => {
       console.log("Connected to WebSocket");
-      this.sendJoinMessage();
+
+      this.stompClient.subscribe("/topic/history", (response) => {
+        const historyMessages: ChatMessage[] = JSON.parse(response.body);
+        messages.set(historyMessages);
+      });
 
       this.stompClient.subscribe("/topic/public", (message) => {
         const chatMessage: ChatMessage = JSON.parse(message.body);
         messages.update((msgs) => [...msgs, chatMessage]);
       });
+
+      // request chat history
+      this.stompClient.publish({
+        destination: "/app/chat.getHistory",
+      });
+
+      setTimeout(() => {
+        this.sendJoinMessage();
+      }, 500);
     };
 
     this.stompClient.onStompError = (frame) => {
@@ -49,8 +62,8 @@ export class ChatWebSocket {
 
   private sendJoinMessage(): void {
     const message: ChatMessage = {
-      content: "",
-      sender: this.username,
+      content: `${this.username} has joined the chat.`,
+      sender: "System",
       timestamp: new Date().toISOString(),
       type: "JOIN",
     };
