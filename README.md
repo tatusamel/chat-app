@@ -61,7 +61,7 @@ The backend server will start on `http://localhost:8080`.
    cd frontend
    ```
 
-2. Install the dependencies:
+2. Install the dependencies::
 
    ```bash
    npm install
